@@ -18,7 +18,7 @@ func NewServer(logger *log.Logger) *Server {
 	router.HandleFunc("/", handlers.ServeIndexHTMLHandler)
 	router.HandleFunc("/upload", handlers.UploadHandler)
 
-	httpServer = &http.Server{
+	httpServer := &http.Server{
 		Addr:         ":8080",
 		Handler:      router,
 		ErrorLog:     logger,
