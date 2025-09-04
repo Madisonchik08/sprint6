@@ -2,8 +2,7 @@ package service
 
 import (
 	"errors"
-	"strings"
-	"unicode"
+	"log"
 
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/pkg/morse"
 )
@@ -20,19 +19,13 @@ func ProcessData(data string) (string, error) {
 		}
 	}
 	if isMorse {
-		return morse.ToText(data), nil
+		result := morse.ToText(data)
+		log.Printf("Service: Converted Morse to Text: %q", result)
+		return result, nil
 
 	} else {
-		normalized := morse.ToText(data)
-		return morse.ToText(normalized), nil
+		result := morse.ToText(data)
+		log.Printf("Service: Converted Text to Morse: %q", result)
+		return result, nil
 	}
-}
-func normalizeText(text string) string {
-	var result []rune
-	for _, r := range strings.ToUpper(text) {
-		if unicode.IsLetter(r) || unicode.IsDigit(r) || unicode.IsSpace(r) {
-			result = append(result, r)
-		}
-	}
-	return string(result)
 }
