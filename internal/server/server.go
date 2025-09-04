@@ -13,7 +13,7 @@ type Server struct {
 	httpServer *http.Server
 }
 
-func NewServer(logger *log.Logger, httpServer *http.Server) *Server {
+func NewServer(logger *log.Logger) *Server {
 	router := http.NewServeMux()
 	router.HandleFunc("/", handlers.ServeIndexHTMLHandler)
 	router.HandleFunc("/upload", handlers.UploadHandler)
