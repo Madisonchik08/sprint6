@@ -13,7 +13,7 @@ func ProcessData(data string) (string, error) {
 	}
 	isMorse := true
 	for _, r := range data {
-		if r != '.' && r != '-' && r != '/' && r != ' ' {
+		if r != '.' && r != '-' && r != ' ' {
 			isMorse = false
 			break
 		}

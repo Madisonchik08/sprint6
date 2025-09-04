@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -39,8 +40,13 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error retrieving file form: "+err.Error(), http.StatusBadRequest)
 		return
 	}
-	defer file.Close()
-	fileBytes, err := ioutil.ReadAll(file)
+	defer func(file multipart.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
+	fileBytes, err := io.ReadAll(file)
 	if err != nil {
 		http.Error(w, "File reading error: "+err.Error(), http.StatusInternalServerError)
 		log.Printf("File reading error: %v\n", err)
@@ -65,12 +71,15 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	outputFile, err := os.Create(outputPath)
 	if err != nil {
 		http.Error(w, "Error creating output file: "+err.Error(), http.StatusInternalServerError)
-		log.Printf("Error creating output file: %v\n", err)
+		log.Printf("Error creating output file: %v\n", outputPath, err)
 		return
 	}
-	defer outputFile.Close()
+	defer func(outputFile *os.File) {
+		err := outputFile.Close()
+		if err != nil {
+
+		}
+	}(outputFile)
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte(fmt.Sprintf("The file has been successfully processed and saved as: %s\n", newFileName)))
-	_, _ = w.Write([]byte("Conversion result:\n"))
 	_, _ = w.Write([]byte(convertedContent))
 }
