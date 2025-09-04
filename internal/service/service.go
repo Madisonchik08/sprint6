@@ -24,7 +24,7 @@ func ProcessData(data string) (string, error) {
 		return result, nil
 
 	} else {
-		result := morse.ToText(data)
+		result := morse.ToMorse(data)
 		log.Printf("Service: Converted Text to Morse: %q", result)
 		return result, nil
 	}
